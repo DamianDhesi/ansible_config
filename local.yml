@@ -1,0 +1,22 @@
+---
+- name: Update Linux Host
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - name: Run equivalent of "apt-get update"
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: Update all packages to latest version
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+    - name: Run equivalent of "apt-get dist-upgrade"
+      ansible.builtin.apt:
+        upgrade: dist
+    - name: Trigger delayed reboot
+      ansible.builtin.shell: "sleep 10 && reboot"
+      async: 20
+      poll: 0
+    - name: End playbook
+      ansible.builtin.meta: end_play
