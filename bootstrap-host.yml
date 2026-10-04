@@ -1,8 +1,8 @@
 ---
-- name: Setup ansible-pull for VM
+- name: Setup ansible-pull for PVE Host
   hosts: localhost
   connection: local
-  become: true
+  # Running as root
   tasks:
     # Will need to install ansible-core (includes python3) and git manually first
     - name: Set timezone
@@ -18,14 +18,15 @@
     - name: Create ansible-pull cron job
       ansible.builtin.cron:
         name: "ansible-pull"
-        minute: "0"
+        minute: "20"
         hour: "9"
         weekday: "6"
         job: >
           ansible-pull
           -U https://github.com/DamianDhesi/ansible_config.git
           -C main
-          -s 300
+          -s 10
+          host.yml
           >> /var/log/ansible-pull.log 2>&1
     - name: Set up log rotation
       ansible.builtin.copy:
