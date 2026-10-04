@@ -1,0 +1,26 @@
+---
+- name: Update DNS VM
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - name: Run equivalent of "apt-get update"
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: Update all packages to latest version
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+    - name: Run equivalent of "apt full-upgrade"
+      ansible.builtin.apt:
+        upgrade: full
+    - name: Autoremove dependenices and autoclean cache
+      ansible.builtin.apt:
+        autoremove: yes
+        autoclean: yes
+    - name: Trigger delayed reboot
+      ansible.builtin.shell: "sleep 10 && reboot"
+      async: 20
+      poll: 0
+    - name: End playbook
+      ansible.builtin.meta: end_play
