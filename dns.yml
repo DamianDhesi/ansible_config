@@ -19,7 +19,7 @@
         autoremove: yes
         autoclean: yes
     - name: Update Technitium
-      ansible.builtin.shell: "curl -sSL https://download.technitium.com/dns/uninstall.sh | bash"
+      ansible.builtin.shell: "curl -sSL https://download.technitium.com/dns/install.sh | bash"
     - name: Trigger delayed reboot
       ansible.builtin.shell: "sleep 10 && reboot"
       async: 20
