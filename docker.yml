@@ -1,0 +1,23 @@
+---
+- name: Update Linux VM using Docker
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - name: Run equivalent of "apt-get update"
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: Update all packages to latest version
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+    - name: Run equivalent of "apt full-upgrade"
+      ansible.builtin.apt:
+        upgrade: full
+    - name: Autoremove dependenices and autoclean cache
+      ansible.builtin.apt:
+        autoremove: yes
+        autoclean: yes
+    - name: Update all Docker images
+      ansible.builtin.shell: "docker compose pull && docker compose up -d && docker image prune -af"
+# VM will reboot when host reboots

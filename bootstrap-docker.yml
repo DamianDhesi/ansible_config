@@ -1,0 +1,41 @@
+---
+- name: Setup ansible-pull for VM
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    # Will need to install ansible-core (includes python3) and git manually first
+    - name: Set timezone
+      ansible.builtin.command: "timedatectl set-timezone America/Los_Angeles"
+    - name: Install cron
+      ansible.builtin.apt:
+        name: cron
+        state: present
+    - name: Install logrotate
+      ansible.builtin.apt:
+        name: logrotate
+        state: present
+    - name: Create ansible-pull cron job
+      ansible.builtin.cron:
+        name: "ansible-pull"
+        minute: "0"
+        hour: "9"
+        weekday: "6"
+        job: >
+          ansible-pull
+          -U https://github.com/DamianDhesi/ansible_config.git
+          -C main
+          -s 300
+          docker.yml
+          >> /var/log/ansible-pull.log 2>&1
+    - name: Set up log rotation
+      ansible.builtin.copy:
+        dest: /etc/logrotate.d/ansible-pull
+        content: |
+          /var/log/ansible-pull.log {
+              weekly
+              rotate 4
+              compress
+              missingok
+              notifempty
+          }
