@@ -1,23 +1,12 @@
 ---
+- name: Run Linux update play
+  ansible.builtin.import_playbook: update/update_linux.yml
+
 - name: Update Technitium DNS
   hosts: localhost
   connection: local
   become: true
   tasks:
-    - name: Run equivalent of "apt-get update"
-      ansible.builtin.apt:
-        update_cache: yes
-    - name: Update all packages to latest version
-      ansible.builtin.apt:
-        name: "*"
-        state: latest
-    - name: Run equivalent of "apt full-upgrade"
-      ansible.builtin.apt:
-        upgrade: full
-    - name: Autoremove dependenices and autoclean cache
-      ansible.builtin.apt:
-        autoremove: yes
-        autoclean: yes
     - name: Update Technitium
       ansible.builtin.shell: "curl -sSL https://download.technitium.com/dns/install.sh | bash"
     - name: Trigger delayed reboot

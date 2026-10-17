@@ -2,7 +2,7 @@
 - name: Update Linux
   hosts: localhost
   connection: local
-  become: true
+  # Running as root
   tasks:
     - name: Run equivalent of "apt-get update"
       ansible.builtin.apt:
