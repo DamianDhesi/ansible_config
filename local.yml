@@ -1,5 +1,5 @@
 ---
-- name: Update Linux VM
+- name: Update Linux
   hosts: localhost
   connection: local
   become: true
@@ -18,4 +18,4 @@
       ansible.builtin.apt:
         autoremove: yes
         autoclean: yes
-# VM will reboot when host reboots
+#reboot when host reboots

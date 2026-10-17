@@ -25,8 +25,16 @@
           ansible-pull
           -U https://github.com/DamianDhesi/ansible_config.git
           -C main
-          -s 10
-          host.yml
+          -s 30
+          >> /var/log/ansible-pull.log 2>&1
+    - name: Create reboot cron job
+      ansible.builtin.cron:
+        name: "ansible-reboot"
+        minute: "30"
+        hour: "9"
+        weekday: "6"
+        job: >
+          /usr/sbin/reboot
           >> /var/log/ansible-pull.log 2>&1
     - name: Set up log rotation
       ansible.builtin.copy:
