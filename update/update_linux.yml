@@ -1,8 +1,8 @@
 ---
-- name: Update Linux
+- name: Update Debian based Linux
   hosts: localhost
   connection: local
-  # Running as root
+  become: true
   tasks:
     - name: Run equivalent of "apt-get update"
       ansible.builtin.apt:
@@ -18,4 +18,3 @@
       ansible.builtin.apt:
         autoremove: yes
         autoclean: yes
-#reboot when host reboots

@@ -5,7 +5,7 @@
 - name: Setup ansible-pull for PVE Host
   hosts: localhost
   connection: local
-  # Running as root
+  become: true
   tasks:
     # Will need to install ansible-core (includes python3) and git manually first
     - name: Create ansible-pull cron job
