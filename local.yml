@@ -1,4 +1,8 @@
 ---
-- name: Run Linux update play
-  ansible.builtin.import_playbook: update/update_linux.yml
+- name: Run OS update play
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - update
 #reboot when host reboots

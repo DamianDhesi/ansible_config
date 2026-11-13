@@ -1,0 +1,8 @@
+---
+- name: Apply updates for Debian based distros
+  ansible.builtin.import_tasks: debian.yml
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Apply updates for RHEL/Fedora based distros
+  ansible.builtin.import_tasks: rhel.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
