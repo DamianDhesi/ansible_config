@@ -2,12 +2,15 @@
 - name: Run equivalent of "dnf update"
   ansible.builtin.dnf:
     upgrade_cache: true
+
 - name: Run equivlaent of "dnf upgrade"
   ansible.builtin.dnf:
     name: "*"
     state: latest
+
 - name: autoremove dependenices
   ansible.builtin.dnf:
     autoremove: true
+
 - name: clear cache
   ansible.builtin.command: dnf clean all

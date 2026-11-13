@@ -1,0 +1,54 @@
+---
+- name: Set timezone
+  ansible.builtin.command: timedatectl set-timezone {{ timezone }}
+
+- name: Install cron and logrotate with apt
+  ansible.builtin.apt:
+    name:
+      - cron
+      - logrotate
+    state: present
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Install cron and logrotate with dnf
+  ansible.builtin.dnf:
+    name:
+      - cron
+      - logrotate
+    state: present
+  when: ansible_facts['os_family']|lower == 'redhat'
+
+- name: Create ansible-pull cron job
+  ansible.builtin.cron:
+    name: "ansible-pull"
+    minute: "{{ pull_minute }}"
+    hour: "{{ pull_hour }}"
+    weekday: "{{ pull_day }}"
+    job: >
+      ansible-pull
+      -U {{ pull_repo }}
+      -C {{ pull_branch }}
+      -s {{ pull_sleep_time }}
+      {{ pull_playbook }}
+      >> {{ pull_log }} 2>&1
+- name: Create reboot cron job
+  ansible.builtin.cron:
+    name: "ansible-reboot"
+    minute: "{{ reboot_minute }}"
+    hour: "{{ reboot_hour }}"
+    weekday: "{{ reboot_day }}"
+    job: >
+      /usr/sbin/reboot
+      >> {{ pull_log }} 2>&1
+  when: is_host
+- name: Set up log rotation
+  ansible.builtin.copy:
+    dest: /etc/logrotate.d/ansible-pull
+    content: |
+      {{ pull_log }} {
+          weekly
+          rotate 4
+          compress
+          missingok
+          notifempty
+      }
