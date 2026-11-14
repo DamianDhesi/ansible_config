@@ -1,0 +1,17 @@
+---
+timezone: America/Los_Angeles
+
+pull_minute: 0
+pull_hour: 9
+pull_day: 6
+pull_repo: https://github.com/DamianDhesi/ansible_config.git
+pull_branch: main
+pull_sleep_time: 300
+pull_playbook: ""
+pull_log: /var/log/ansible-pull.log
+
+reboot_minute: 30
+reboot_hour: 9
+reboot_day: 6
+
+is_host: false

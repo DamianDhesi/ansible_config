@@ -1,42 +1,11 @@
 ---
-- name: Setup cron and logrotate
-  ansible.builtin.import_playbook: bootstrap/setup.yml
-
-- name: Setup ansible-pull for PVE Host
+- name: Setup ansible-pull for Host
   hosts: localhost
   connection: local
   become: true
-  tasks:
-    # Will need to install ansible-core (includes python3) and git manually first
-    - name: Create ansible-pull cron job
-      ansible.builtin.cron:
-        name: "ansible-pull"
-        minute: "20"
-        hour: "9"
-        weekday: "6"
-        job: >
-          ansible-pull
-          -U https://github.com/DamianDhesi/ansible_config.git
-          -C main
-          -s 30
-          >> /var/log/ansible-pull.log 2>&1
-    - name: Create reboot cron job
-      ansible.builtin.cron:
-        name: "ansible-reboot"
-        minute: "30"
-        hour: "9"
-        weekday: "6"
-        job: >
-          /usr/sbin/reboot
-          >> /var/log/ansible-pull.log 2>&1
-    - name: Set up log rotation
-      ansible.builtin.copy:
-        dest: /etc/logrotate.d/ansible-pull
-        content: |
-          /var/log/ansible-pull.log {
-              weekly
-              rotate 4
-              compress
-              missingok
-              notifempty
-          }
+  roles:
+    - role: bootstrap
+      pull_minute: 20
+      pull_sleep_time: 30
+      reboot_minute: 40
+      is_host: true

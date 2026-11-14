@@ -8,9 +8,9 @@
     name: "*"
     state: latest
 
-- name: autoremove dependenices
+- name: Autoremove dependenices
   ansible.builtin.dnf:
     autoremove: true
 
-- name: clear cache
+- name: Clear cache
   ansible.builtin.command: dnf clean all

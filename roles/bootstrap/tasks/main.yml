@@ -8,15 +8,23 @@
       - cron
       - logrotate
     state: present
+    update_cache: true
   when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Install cron and logrotate with dnf
   ansible.builtin.dnf:
     name:
-      - cron
+      - cronie
       - logrotate
     state: present
+    update_cache: true
   when: ansible_facts['os_family']|lower == 'redhat'
+
+- name: Enable and start cron
+  ansible.builtin.service:
+    name: "{{ 'cron' if ansible_facts['os_family']|lower == 'debian' else 'crond' }}"
+    state: started
+    enabled: true 
 
 - name: Create ansible-pull cron job
   ansible.builtin.cron:
@@ -24,13 +32,14 @@
     minute: "{{ pull_minute }}"
     hour: "{{ pull_hour }}"
     weekday: "{{ pull_day }}"
-    job: >
+    job: >-
       ansible-pull
       -U {{ pull_repo }}
       -C {{ pull_branch }}
       -s {{ pull_sleep_time }}
       {{ pull_playbook }}
       >> {{ pull_log }} 2>&1
+
 - name: Create reboot cron job
   ansible.builtin.cron:
     name: "ansible-reboot"
@@ -40,10 +49,14 @@
     job: >
       /usr/sbin/reboot
       >> {{ pull_log }} 2>&1
-  when: is_host
+    state: "{{ 'present' if is_host|bool else 'absent' }}"
+
 - name: Set up log rotation
   ansible.builtin.copy:
     dest: /etc/logrotate.d/ansible-pull
+    owner: root
+    group: root
+    mode: "0644"
     content: |
       {{ pull_log }} {
           weekly
