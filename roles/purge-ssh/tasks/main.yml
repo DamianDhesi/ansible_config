@@ -1,0 +1,13 @@
+---
+- name: Remove OpenSSH server using apt
+  ansible.builtin.apt:
+    name: openssh-server
+    state: absent
+    purge: true
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Remove OpenSSH server using dnf
+  ansible.builtin.apt:
+    name: openssh-server
+    state: absent
+  when: ansible_facts['os_family']|lower == 'redhat'

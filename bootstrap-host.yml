@@ -4,6 +4,7 @@
   connection: local
   become: true
   roles:
+    - purge-ssh
     - role: bootstrap
       pull_minute: 20
       pull_sleep_time: 30
