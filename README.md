@@ -1,4 +1,4 @@
-## Ansible Playboosk
+## Ansible Playbooks
 ### Update Order
 Updates start at 9:00am in America/Los_Angeles timezone every Saturday and proceed as follows
 - 9:00am
