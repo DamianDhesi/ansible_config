@@ -1,6 +1,6 @@
 ---
 - name: Run Linux update play
-  ansible.builtin.import_playbook: update/update_linux.yml
+  ansible.builtin.import_playbook: local.yml
 
 - name: Update Technitium DNS
   hosts: localhost
