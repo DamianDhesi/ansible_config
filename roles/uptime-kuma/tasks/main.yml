@@ -1,0 +1,13 @@
+---
+- name: Update from git
+  ansible.builtin.shell: git fetch --all --tags && git checkout {{ version }} --force
+  args:
+    chdir: /root/uptime-kuma/
+
+- name: Install dependencies and build
+  ansible.builtin.shell: npm install --omit dev --no-audit && npm run download-dist
+  args:
+    chdir: /root/uptime-kuma/
+
+- name: Restart
+  ansible.builtin.command: pm2 restart uptime-kuma

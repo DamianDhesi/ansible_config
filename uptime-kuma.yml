@@ -1,0 +1,10 @@
+---
+- name: Run OS update play
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - update
+    - role: uptime-kuma
+      version: 2.5.11
+# reboot when host reboots
