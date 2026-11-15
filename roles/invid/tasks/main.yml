@@ -6,7 +6,7 @@
   become_user: invidious
 
 - name: Get latest version of companion repo and build it
-  ansible.builtin.shell: git restore . && git pull && deno task compile
+  ansible.builtin.shell: git restore . && git pull && /home/invidious/.deno/bin/deno task compile
   args:
     chdir: /home/invidious/invidious-companion
   become_user: invidious
