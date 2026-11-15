@@ -5,4 +5,4 @@
   become: true
   roles:
     - update
-#reboot when host reboots
+# reboot when host reboots

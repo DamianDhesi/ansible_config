@@ -1,0 +1,3 @@
+---
+- name: Update Technitium DNS server
+  ansible.builtin.shell: "curl -sSL https://download.technitium.com/dns/install.sh | bash"

@@ -1,0 +1,11 @@
+---
+- name: Setup ansible-pull for Host
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - purge-ssh
+    - role: bootstrap
+      pull_minute: 30
+      pull_sleep_time: 10
+      pull_playbook: dns.yml
