@@ -1,0 +1,9 @@
+---
+- name: Update OS and Invidious
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - update
+    - invid
+# reboot when host reboots

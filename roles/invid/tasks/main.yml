@@ -1,0 +1,15 @@
+---
+- name: Get latest version of Invidious repo and build it
+  ansible.builtin.shell: git pull && make
+  args:
+    chdir: /home/invidious/invidious
+  become_user: invidious
+
+- name: Get latest version of companion repo and build it
+  ansible.builtin.shell: git restore . && git pull && deno task compile
+  args:
+    chdir: /home/invidious/invidious-companion
+  become_user: invidious
+
+- name: Restart services
+  ansible.builtin.shell: systemctl restart invidious.service && systemctl restart invidious-companion.service
