@@ -1,5 +1,5 @@
 ---
-- name: Setup ansible-pull for Host
+- name: Setup ansible-pull for DNS server
   hosts: localhost
   connection: local
   become: true

@@ -9,6 +9,7 @@ Updates start at 9:00am in America/Los_Angeles timezone every Saturday and proce
 - 9:30am
     - DNS server VMs update OS and DNS server
 - 9:40am
+    - reboot PBS
     - PVE hosts reboot at intervals of 5 minutes
         - 9:40 - pm-latitude
         - 9:45 - pm-dell
