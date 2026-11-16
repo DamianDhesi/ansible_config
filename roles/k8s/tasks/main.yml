@@ -1,0 +1,6 @@
+---
+- name: Update and apply manifests via kustomization yaml
+  ansible.builtin.shell: git pull && kubectl apply -k .
+  args:
+    chdir: /home/user/kub_config
+  become_user: user

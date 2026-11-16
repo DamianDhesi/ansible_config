@@ -1,0 +1,9 @@
+---
+- name: Update main server OS and k8s cluster pods
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - update
+    - k8s
+# reboot when host reboots
